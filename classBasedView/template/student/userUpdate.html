@@ -1,0 +1,27 @@
+
+
+{% extends 'auth/dashboard.html' %}
+{% block title %} Update {% endblock title %}
+
+{% block content %}
+<form method="POST">
+  {% csrf_token %}  
+  <table class="table">
+    <tbody>
+      {% for field in user %}
+      <tr>
+        <td><label for="{{ field.id_for_label }}">{{ field.label }}</label></td>
+        <td>{{ field }}</td>
+        <td>
+          {% if field.errors %}
+            <span class="error">{{ field.errors | striptags }}</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="submit">Update</button>
+</form>
+{% endblock content %}
+

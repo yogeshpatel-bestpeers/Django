@@ -1,0 +1,6 @@
+{% extends 'auth/dashboard.html'%}
+{% block title%} Home {% endblock title%}
+{% block content%}
+<a href="{% url 'student_list' user.id %}" class="btn btn-primary">View Students</a>
+<a href="{% url 'student_create'%}" class="btn btn-primary">Add Students</a>
+{% endblock content%}
