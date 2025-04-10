@@ -7,6 +7,7 @@ from .forms import StudentForm
 from .models import Student
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 @method_decorator(login_required,name='dispatch')
@@ -38,8 +39,11 @@ class StudentCreateView(View):
 class StudentDetailViews(View):  
     
     def get(self,request,id):
-      form = Student.objects.filter(user= id)
-      return render(request,'student/userGet.html',{'user':form})
+      student = Student.objects.filter(user= id)
+      paginator = Paginator(student,3)
+      page_num = request.GET.get('page')
+      page_obj = paginator.get_page(page_num)
+      return render(request,'student/userGet.html',{'user':page_obj})
   
 
 @method_decorator(login_required,name='dispatch')
@@ -76,10 +80,6 @@ class StudentUpdateView(View):
 
 
     return render(request,'student/userCreate.html',{'user':form})   
-
-
-
-
 
 
 

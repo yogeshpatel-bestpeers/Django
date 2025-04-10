@@ -24,7 +24,7 @@
     <!-- <div class="d-flex justify-content-center">
       <a href="{% url 'student_create'%}" class="btn btn-warning btn-sm" >Add Student</a>
     </div>      -->
-
   </tbody>
 </table> 
+{% include 'page/page.html' with page_obj=user %}
 {% endblock content%}
