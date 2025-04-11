@@ -11,13 +11,15 @@ from django.utils.decorators import method_decorator
 
 
 class Registration(View):
+    template_name = None
     @method_decorator(custom_login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
+    
     def get(self,request):
         form = UserForm()
-        return render(request,'auth/signup.html',{'form':form})
+        return render(request,self.template_name,{'form':form})
     
     def post(self,request):
         form = UserForm(request.POST)
@@ -33,7 +35,7 @@ class Registration(View):
         return render(request,'/auth/signup.html',{'form':form})
     
 class Login(View):
-    
+    template_name = None
     
 
     def get(self,request):
@@ -43,7 +45,9 @@ class Login(View):
             
         else:
             form = UserForm()
-            return render(request,'custom/login.html',{'form':form})
+
+            return render(request,self.template_name,{'form':form})
+        # 'custom/login.html'
 
     
     def post(self,request):
@@ -63,7 +67,7 @@ class Login(View):
         else :
             form = UserForm()
             messages.error(request, 'Invalid email or password')
-            return render(request, 'custom/login.html',{'form':form})
+            return render(request, self.template_name,{'form':form})
 
 class LogoutView(View):
     def get(self, request):
@@ -75,11 +79,11 @@ class LogoutView(View):
             
     
 class Profile(View):
-
+    template_name =None
     def get(self,request):
         print("is user valid  : ",request.user)
         if request.user and request.user.is_authenticated:
-            template_name = 'custom/profile.html' 
-            return render(request,template_name,{'user':request.user})   
+            
+            return render(request,self.template_name,{'user':request.user})   
         else:
             return redirect('/account/login/') 
