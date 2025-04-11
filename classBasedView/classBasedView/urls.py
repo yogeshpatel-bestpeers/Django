@@ -28,4 +28,10 @@ urlpatterns = [
     path('login/',auth_view.LoginView.as_view(template_name='auth/login.html'),name='login'),
     path('',auth_view.LoginView.as_view(template_name='auth/login.html'),name='login'),
     path('logout/',auth_view.LogoutView.as_view(),name='logout')
+
+    # path('signup/',views.Registration.as_view(),name='signup'),
+    # path('login/',views.Login.as_view(),name='custom_login'),  
+    # path('profile/',views.Profile.as_view()),
+    # path('logout/',views.LogoutView.as_view(),name='custom_logout')
 ]
+

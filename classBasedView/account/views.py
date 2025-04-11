@@ -4,10 +4,17 @@ from django.views.generic import TemplateView
 from .forms import UserForm
 from .models import User
 from django.contrib import messages
+from .utils import custom_login_required
+from django.utils.decorators import method_decorator
+
 # Create your views here.
 
-class Registration(View):
 
+class Registration(View):
+    @method_decorator(custom_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self,request):
         form = UserForm()
         return render(request,'auth/signup.html',{'form':form})
@@ -20,13 +27,14 @@ class Registration(View):
             user = form.save(commit=False)  
             user.set_password(form.cleaned_data['password'])
             user.save()
-            print('hii')
             return redirect('/account/login/')
             
 
         return render(request,'/auth/signup.html',{'form':form})
     
 class Login(View):
+    
+    
 
     def get(self,request):
         
@@ -35,7 +43,7 @@ class Login(View):
             
         else:
             form = UserForm()
-            return render(request,'auth/login.html',{'form':form})
+            return render(request,'custom/login.html',{'form':form})
 
     
     def post(self,request):
@@ -55,7 +63,7 @@ class Login(View):
         else :
             form = UserForm()
             messages.error(request, 'Invalid email or password')
-            return render(request, 'auth/login.html',{'form':form})
+            return render(request, 'custom/login.html',{'form':form})
 
 class LogoutView(View):
     def get(self, request):
