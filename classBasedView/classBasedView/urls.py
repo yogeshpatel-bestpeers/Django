@@ -21,9 +21,11 @@ from student import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('student/', include('student.urls')),
+    path('student/',include('student.urls')),
     path('page/',include('pagination.urls')),
+    path('account/',include('account.urls')),
     path('dashboard/',views.Dashboard.as_view(),name ='dashboard'),
     path('login/',auth_view.LoginView.as_view(template_name='auth/login.html'),name='login'),
+    path('',auth_view.LoginView.as_view(template_name='auth/login.html'),name='login'),
     path('logout/',auth_view.LogoutView.as_view(),name='logout')
 ]

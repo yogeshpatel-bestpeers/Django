@@ -28,6 +28,8 @@ class StudentCreateView(View):
     form = StudentForm(request.POST)
     if form.is_valid(): 
       student = form.save(commit=False)  
+      student.set_password(form.cleaned_data['password'])
+      # print(form.cleaned_data['password'])
       student.user = request.user  
       student.save()
   
@@ -72,8 +74,9 @@ class StudentUpdateView(View):
     student = get_object_or_404(Student,id = user_id)
     form = StudentForm(request.POST,instance=student)
     if form.is_valid():
-      student = form.save(commit=False)  
+      student = form.save(commit=False)   
       student.user = request.user  
+      student.set_password(form.cleaned_data['password'])
       student.save()
   
       return redirect('student_list',id = request.user.id)
