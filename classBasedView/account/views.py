@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from .forms import UserForm
 from .models import User
-
+from django.contrib import messages
 # Create your views here.
 
 class Registration(View):
@@ -24,14 +24,19 @@ class Registration(View):
             return redirect('/account/login/')
             
 
-        return render(request,'auth/signup.html',{'form':form})
+        return render(request,'/auth/signup.html',{'form':form})
     
 class Login(View):
 
     def get(self,request):
-        print('login')
-        form = UserForm()
-        return render(request,'auth/login.html',{'form':form})    
+        
+        if request.user and request.user.is_authenticated:
+            return redirect('/account/profile/')
+            
+        else:
+            form = UserForm()
+            return render(request,'auth/login.html',{'form':form})
+
     
     def post(self,request):
 
@@ -48,7 +53,9 @@ class Login(View):
             
 
         else :
-            return redirect('auth/login.html')
+            form = UserForm()
+            messages.error(request, 'Invalid email or password')
+            return render(request, 'auth/login.html',{'form':form})
 
 class LogoutView(View):
     def get(self, request):

@@ -7,6 +7,7 @@ class CustomAuthMiddleware:
         
         from .models import User
         user_id = request.session.get('user_id')
+        print('middleWare : ', user_id)
         if user_id:
             try:
                 request.user = User.objects.get(user_id=user_id)
