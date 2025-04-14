@@ -11,11 +11,4 @@ urlpatterns = [
     
 ]
 
-
-
-# urlpatterns = [
-#     path('studentCreate/',views.StudentCreateGenricView.as_view(),name='student_create'),
-#     path('studentList/',views.StudentListGenricView.as_view(),name='student_list'),
-#     path('studentDelete/<int:user_id>/',views.StudentDeleteView.as_view(),name='student_delete'),
-#     path('studentUpdate/<int:user_id>/',views.StudentUpdateView.as_view(),name='student_update')
-# ]
+    
