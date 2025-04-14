@@ -8,6 +8,7 @@ from .models import Student
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 @method_decorator(login_required,name='dispatch')
@@ -20,7 +21,7 @@ class Dashboard(TemplateView):
 class StudentCreateView(View):
 
   def get(self,request):
-      print(request.user)
+
       form = StudentForm()
       return render(request,'student/userCreate.html',{'user':form})
 
@@ -29,7 +30,7 @@ class StudentCreateView(View):
     if form.is_valid(): 
       student = form.save(commit=False)  
       student.set_password(form.cleaned_data['password'])
-      # print(form.cleaned_data['password'])
+
       student.user = request.user  
       student.save()
   
@@ -37,15 +38,30 @@ class StudentCreateView(View):
 
     return render(request,'student/userCreate.html',{'user':form})  
   
-@method_decorator(login_required,name='dispatch')
+@method_decorator(login_required,name='dispatch') 
 class StudentDetailViews(View):  
     
     def get(self,request,id):
+      query = request.GET.get('q','')
+
       student = Student.objects.filter(user= id)
+
+      if query:
+            student = student.filter(
+                Q(course__icontains=query) |
+                Q(name__icontains=query) 
+            )
+      else:
+            student = student.all()
+
+  
+
+
       paginator = Paginator(student,3)
       page_num = request.GET.get('page')
       page_obj = paginator.get_page(page_num)
-      return render(request,'student/userGet.html',{'user':page_obj})
+      return render(request,'student/userGet.html',{'user':page_obj,'query': query,'sid':id})
+    
   
 
 @method_decorator(login_required,name='dispatch')

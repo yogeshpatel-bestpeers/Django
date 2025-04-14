@@ -1,6 +1,12 @@
 {% extends 'auth/dashboard.html'%}
 {% block title%} DashBoard {% endblock title%}
 {% block content%}
+
+<form method="get" action="{% url 'student_list' sid%}">
+  <input type="text" name="q" value="{{ query }}" placeholder="Search by name, or course" />
+  <input type="submit" value="Search" />
+</form>
+
 <table class="table">
   <thead>
     <tr>
