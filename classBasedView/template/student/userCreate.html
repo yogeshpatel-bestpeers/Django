@@ -1,0 +1,22 @@
+{% extends 'auth/dashboard.html'%}
+{% block title%} Home {% endblock title%}
+{% block content%}
+  
+<form method="POST">
+  {% csrf_token %}
+
+  {% for field in user %}
+    <div>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }} 
+      {% if field.errors %}
+        <span class="error">{{ field.errors | striptags }}</span>
+      {% endif %}
+    </div>
+  {% endfor %}
+    
+  <button type="submit">Submit</button>
+</form>
+
+{% endblock content%}
+

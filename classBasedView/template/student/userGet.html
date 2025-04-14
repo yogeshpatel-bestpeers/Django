@@ -1,0 +1,30 @@
+{% extends 'auth/dashboard.html'%}
+{% block title%} DashBoard {% endblock title%}
+{% block content%}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Student Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Course</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in user %}
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td> 
+      <td>{{ user.course}}</td>
+      <td> 
+        <a href="{% url 'student_update' user.id %}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'student_delete' user.id %}" class="btn btn-danger btn-sm">Delete</a>
+      </td>
+    </tr>
+    {% endfor %} 
+    <!-- <div class="d-flex justify-content-center">
+      <a href="{% url 'student_create'%}" class="btn btn-warning btn-sm" >Add Student</a>
+    </div>      -->
+  </tbody>
+</table> 
+{% include 'page/page.html' with page_obj=user %}
+{% endblock content%}
